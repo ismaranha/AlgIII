@@ -33,10 +33,20 @@ int upper(char string[]){//TRANSFORMA EM MAIUSCULA
 	return(1);
 }
 
+int lower(char string[]){//TRANSFORMA EM MINUSCULA
+	int i;
+
+	for(i=0;i<len(string);i++){
+		if((string[i]>=65)&&(string[i]<=90)) {
+			string[i]=string[i]+32;
+		}
+	} 
+	return(1);
+}
 int cifrar(char fFrase[]){
 	int cars_dig,i;
 	
-	cars_dig=len(fFrase); //Variavel armazena numero de caracteres antes das alterações :) 
+	cars_dig=len(fFrase)-1; //Variavel armazena numero de caracteres antes das alterações :), -1 para tirar enter
 	limpa_string(fFrase);
 	
 	upper(fFrase);
@@ -47,32 +57,35 @@ int cifrar(char fFrase[]){
 			fFrase[i]= fFrase[i]-26;
 		}
 		fFrase[i]=fFrase[i]+3;
+		
 		if(i==0){
 			printf("$%c",fFrase[i]);	
 		}else{
-			printf("%c",fFrase[i-1]);
+			printf("%c",fFrase[i]);
 		}	
 	}
-	printf("\n %i CARS DIGITADOS",cars_dig);
-	
+	printf("\n%i CARS DIGITADOS",cars_dig);
 	
 	return(1);
 }
 
 int decifrar(char fFrase[]){
-	int cars_dig ;
+	int cars_dig;
 	int i= 0;
+	cars_dig = len(fFrase)-1;
+	lower(fFrase);
 	
 	printf("# modo decifragem ativado\n");
+	
 	for(i=0;fFrase[i]!=0;i++){
-		if(fFrase[i]-3 > 90){
-			fFrase[i]= fFrase[i]+26;
+		if(fFrase[i]-3 < 65){
+			fFrase[i]= fFrase[i]+25;
 		}
 		fFrase[i]=fFrase[i]-3;
 		if(i==0){
 			printf("$%c",fFrase[i]);	
 		}else{
-			printf("%c",fFrase[i-1]);
+			printf("%c",fFrase[i]);
 		}	
 	}
 	printf("\n %i CARS DIGITADOS",cars_dig);
@@ -88,6 +101,10 @@ int main( int argc, char *argv[ ] ){
 	if(1==1) { // FALTA VALIDAR OQUE CHEGA NO MAIN
 		printf("# Quantas frases voce quer digitar?\n");
 		scanf("%i",&Qtd_strings);
+		
+		while(!(Qtd_strings > 0)){
+			printf("# Quantas frases voce quer digitar?\n");
+		}
 	} else{
 		Qtd_strings= *argv[1];
 	}
@@ -98,8 +115,8 @@ int main( int argc, char *argv[ ] ){
 			fgets(frases[i],MAX,stdin);
 		}while(len(frases[i])<2);
 		
-		if (frases[i][1]!="$"){
-			cifrar(frases[i]);
+		if (frases[1][0]!='$'){
+			cifrar(frases[i]);//deve ser cifrar
 		}else{
 			decifrar(frases[i]);
 		}
